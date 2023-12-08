@@ -1,7 +1,4 @@
-using Unity.VisualScripting;
-using UnityEditor.XR;
 using UnityEngine;
-using UnityEngine.Scripting.APIUpdating;
 
 [System.Serializable]
 public class PlayerInfo
@@ -19,6 +16,7 @@ public class Player : MonoBehaviour
     Gun _equippedGun = null;
 
     Rigidbody2D _rigidbody;
+    float _shotTimer = 0f;
 
     [SerializeField] float speed;
 
@@ -53,6 +51,9 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
+        if (_equippedGun == null)
+            return;
+
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = mousePos - _rigidbody.position;
         direction.Normalize();
