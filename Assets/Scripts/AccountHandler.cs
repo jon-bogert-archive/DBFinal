@@ -2,6 +2,7 @@ using Mono.Data.Sqlite;
 using System.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class AccountHandler : MonoBehaviour
@@ -40,7 +41,7 @@ public class AccountHandler : MonoBehaviour
         }
         reader.Close();
 
-        cmd.CommandText = "insert into users (username, password, playerName)" +
+        cmd.CommandText = "insert into player (username, password, playerName)" +
             "values ('" + _usernameInput.text + "', '" + _passwordInput.text + "', '" + _playerNameInput.text + "');";
         cmd.ExecuteNonQuery();
 
@@ -48,7 +49,8 @@ public class AccountHandler : MonoBehaviour
         connection.Close();
         connection.Dispose();
 
-        _resultText.text = "Thank you for rigistering " + _playerNameInput.text + "!";
+        _resultText.text = "Thank you for registering " + _playerNameInput.text + "!";
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 
     public void ShowEntry()
@@ -63,7 +65,7 @@ public class AccountHandler : MonoBehaviour
         connection.Open();
         SqliteCommand cmd = connection.CreateCommand();
 
-        cmd.CommandText = "select * from users where username = '" + _usernameInput.text + "';";
+        cmd.CommandText = "select * from player where username = '" + _usernameInput.text + "';";
         IDataReader reader = cmd.ExecuteReader();
 
         if (reader.Read())
@@ -81,6 +83,7 @@ public class AccountHandler : MonoBehaviour
             string name = (string)reader["playerName"];
 
             _resultText.text = "Welcome " + name + "!";
+            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
         }
         else
         {
