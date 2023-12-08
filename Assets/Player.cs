@@ -1,9 +1,5 @@
 using UnityEngine;
 
-class EnemyTmp
-{
-
-}
 
 [System.Serializable]
 public class PlayerInfo
@@ -23,6 +19,7 @@ public class Player : MonoBehaviour
     Rigidbody2D _rigidbody;
     float _shotTimer = 0f;
 
+    [SerializeField] float _health;
     [SerializeField] float _speed;
     [SerializeField] LayerMask _hitLayer;
     [SerializeField] GameObject _shotPrefab;
@@ -82,13 +79,26 @@ public class Player : MonoBehaviour
             }
 
             if (result.rigidbody is null)
+            {
+                Debug.Log("Did not hit");
                 return;
+            }
 
-            EnemyTmp enemy = result.transform.gameObject.GetComponent<EnemyTmp>();
+            Enemy enemy = result.transform.gameObject.GetComponent<Enemy>();
             if (enemy is null)
                 return;
 
-            //enemy.AddHurt(_equippedGun.damage);
+            enemy.AddHurt(_equippedGun.damage);
+        }
+    }
+
+    public void AddHurt(float damage)
+    {
+        _health -= damage;
+
+        if (_health <= 0)
+        {
+            Debug.Log("Game Over");
         }
     }
 
