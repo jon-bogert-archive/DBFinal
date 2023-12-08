@@ -173,8 +173,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _equippedGun:
     name: gun
-    damage: 100
-    fireLimit: 1
+    damage: 2
+    fireLimit: 0.2
     price: 0
   _health: 10
   _speed: 4
