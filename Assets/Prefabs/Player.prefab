@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3847760267725937556}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4160292997696184494
 SpriteRenderer:
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7046653, g: 0.06430225, b: 0.8018868, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -173,11 +173,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _equippedGun:
     name: gun
-    damage: 0
-    fireLimit: 2
+    damage: 2
+    fireLimit: 0.2
     price: 0
-  _speed: 1
+  _health: 10
+  _speed: 4
   _hitLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _shotPrefab: {fileID: 2932209053432003046, guid: 451415b3bbdc4944d975cd41ec781aa4, type: 3}
