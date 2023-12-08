@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 
 [System.Serializable]
@@ -13,7 +14,7 @@ public class PlayerInfo
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    PlayerInfo _info;
+    PlayerInfo _info = new PlayerInfo();
     [SerializeField] Gun _equippedGun = null;
 
     Rigidbody2D _rigidbody;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
     [SerializeField] float _speed;
     [SerializeField] LayerMask _hitLayer;
     [SerializeField] GameObject _shotPrefab;
+    [SerializeField] TextMeshProUGUI _text;
 
     private void Awake()
     {
@@ -101,6 +103,12 @@ public class Player : MonoBehaviour
             Debug.Log("Game Over");
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
         }
+    }
+
+    public void AddPoints(int points)
+    {
+        _info.points += points;
+        _text.text = "Scores: " + _info.points;
     }
 
     public bool LoadInfo(string username, string password)

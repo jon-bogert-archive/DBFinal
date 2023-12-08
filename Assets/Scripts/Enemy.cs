@@ -26,7 +26,8 @@ public class Enemy : MonoBehaviour
 		Debug.Log("enemy hit");
 		_health -= damage;
 		if (_health <= 0)
-        {
+		{
+			_player.AddPoints(1);
 			Debug.Log("enemy died");
 			Destroy(gameObject);
         }
