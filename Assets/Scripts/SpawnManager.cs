@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
     private GameObject _currentSpawner;
 
     [SerializeField] private float _spawnSwitchTime;
+    private float _spawnSwitchTimer;
 
     private void Start()
     {
@@ -24,15 +25,18 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
-        _spawnSwitchTime -= Time.deltaTime;
+        _spawnSwitchTimer -= Time.deltaTime;
 
-        if (_spawnSwitchTime <= 0f)
+        if (_spawnSwitchTimer <= 0f)
         {
             _currentSpawner.SetActive(false);
 
             int i = Random.Range(0, _spawners.Count);
 
             _currentSpawner = _spawners[i];
+            _currentSpawner.SetActive(true);
+
+            _spawnSwitchTimer = _spawnSwitchTime;
         }
     }
 }
