@@ -1,5 +1,10 @@
 using UnityEngine;
 
+class EnemyTmp
+{
+
+}
+
 [System.Serializable]
 public class PlayerInfo
 {
@@ -13,12 +18,14 @@ public class PlayerInfo
 public class Player : MonoBehaviour
 {
     PlayerInfo _info;
-    Gun _equippedGun = null;
+    [SerializeField] Gun _equippedGun = null;
 
     Rigidbody2D _rigidbody;
     float _shotTimer = 0f;
 
-    [SerializeField] float speed;
+    [SerializeField] float _speed;
+    [SerializeField] LayerMask _hitLayer;
+    [SerializeField] GameObject _shotPrefab;
 
     private void Awake()
     {
@@ -44,31 +51,50 @@ public class Player : MonoBehaviour
             velocity += Vector2.right;
 
         velocity.Normalize();
-        velocity *= speed;
+        velocity *= _speed;
 
         _rigidbody.velocity = velocity;
     }
 
     private void Shoot()
     {
+        _shotTimer += Time.deltaTime;
+
         if (_equippedGun == null)
             return;
+        if (_shotTimer < _equippedGun.fireLimit)
+            return;
 
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = mousePos - _rigidbody.position;
-        direction.Normalize();
-        RaycastHit2D result = Physics2D.Raycast(_rigidbody.position, direction);
+
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("Player: Shoot");
+            _shotTimer = 0f;
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 direction = mousePos - _rigidbody.position;
+            direction.Normalize();
+            RaycastHit2D result = Physics2D.Raycast(_rigidbody.position, direction, 100, _hitLayer);
+
+            if (_shotPrefab != null)
+            {
+                Shot shot = Instantiate(_shotPrefab).GetComponent<Shot>();
+                shot.SetPositions(_rigidbody.position, _rigidbody.position + (direction * 100));
+            }
+
+            if (result.rigidbody is null)
+                return;
+
+            EnemyTmp enemy = result.transform.gameObject.GetComponent<EnemyTmp>();
+            if (enemy is null)
+                return;
+
+            //enemy.AddHurt(_equippedGun.damage);
+        }
     }
 
-    /// <summary>
-    /// Loads Info from database
-    /// </summary>
-    /// <param name="username"></param>
-    /// <param name="password"></param>
-    /// <returns></returns>
     public bool LoadInfo(string username, string password)
     {
-        // TODO
+        // TODO Load from Database
         return false;
     }
 
