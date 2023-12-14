@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         if (_health <= 0)
         {
             Debug.Log("Game Over");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
         }
     }
 
