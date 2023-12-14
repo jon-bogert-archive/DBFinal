@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ShopManager : MonoBehaviour
 {
@@ -148,5 +149,10 @@ public class ShopManager : MonoBehaviour
         _pointsText.text = "Player Points: " + playerPoints;
 
         AppData.DBClose(ref connection, ref cmd);
+    }
+
+    public void EnterMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
