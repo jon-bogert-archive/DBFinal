@@ -314,7 +314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameScene: EnemyTest
   shopScene: Shop
-  accountScene: Account
+  accountScene: AccountInfo
   startScene: Start
 --- !u!4 &428836584
 Transform:

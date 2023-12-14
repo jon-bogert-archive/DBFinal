@@ -48,6 +48,9 @@ public class AccountHandler : MonoBehaviour
             string name = (string)reader["username"];
 
             _resultText.text = "Welcome " + name + "!";
+
+            AppData.activePlayerID = reader.GetInt32(reader.GetOrdinal("id"));
+
             SceneManager.LoadScene(1);
         }
         else

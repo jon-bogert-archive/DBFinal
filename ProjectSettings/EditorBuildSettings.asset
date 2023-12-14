@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CreateAccount.unity
     guid: d0ea542b00d2abc4fb37faa8b177eb17
+  - enabled: 1
+    path: Assets/Scenes/AccountInfo.unity
+    guid: d6f8649e881d6af45934d7d820ed3b7b
   m_configObjects: {}

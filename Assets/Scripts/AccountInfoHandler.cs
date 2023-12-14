@@ -19,7 +19,8 @@ public class AccountInfoHandler : MonoBehaviour
         SqliteCommand cmd = connection.CreateCommand();
 
         //test username
-        cmd.CommandText = "select * from player where username = '" + AppData.activePlayerID.ToString() + "';";
+        cmd.CommandText = "select * from player where id = " + AppData.activePlayerID.ToString() + ";";
+        Debug.Log(cmd.CommandText);
         IDataReader reader = cmd.ExecuteReader();
 
         if (reader.Read())
