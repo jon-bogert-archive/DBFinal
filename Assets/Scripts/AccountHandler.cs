@@ -9,48 +9,13 @@ public class AccountHandler : MonoBehaviour
 {
     [SerializeField] TMP_InputField _usernameInput;
     [SerializeField] TMP_InputField _passwordInput;
-    [SerializeField] TMP_InputField _playerNameInput;
     [SerializeField] TMP_Text _resultText;
 
     string _dbName = "URI=file:game.db";
 
-    public void AddEntry()
+    public void GoToRegister()
     {
-        if (_usernameInput.text == "" || _passwordInput.text == "" || _playerNameInput.text == "")
-        {
-            _resultText.text = "One for the required fields was empty";
-            return;
-        }
-
-        SqliteConnection connection = new SqliteConnection(_dbName);
-        connection.Open();
-        SqliteCommand cmd = connection.CreateCommand();
-
-        //test username
-        cmd.CommandText = "select * from player where username = '" + _usernameInput.text + "';";
-        IDataReader reader = cmd.ExecuteReader();
-
-        if (reader.Read())
-        {
-            _resultText.text = "Username already exists...";
-            reader.Close();
-            cmd.Dispose();
-            connection.Close();
-            connection.Dispose();
-            return;
-        }
-        reader.Close();
-
-        cmd.CommandText = "insert into player (username, password, playerName)" +
-            "values ('" + _usernameInput.text + "', '" + _passwordInput.text + "', '" + _playerNameInput.text + "');";
-        cmd.ExecuteNonQuery();
-
-        cmd.Dispose();
-        connection.Close();
-        connection.Dispose();
-
-        _resultText.text = "Thank you for registering " + _playerNameInput.text + "!";
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        SceneManager.LoadScene(3);
     }
 
     public void ShowEntry()
@@ -83,7 +48,7 @@ public class AccountHandler : MonoBehaviour
             string name = (string)reader["playerName"];
 
             _resultText.text = "Welcome " + name + "!";
-            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+            SceneManager.LoadScene(1);
         }
         else
         {
