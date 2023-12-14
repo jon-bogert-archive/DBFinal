@@ -17,6 +17,7 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
+        AppData.activePlayerID = 0;
         HideNotEnoughMenu();
         UpdatePointsText();
 
