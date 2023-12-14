@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
-
+using Mono.Data.Sqlite;
+using System.Data;
 
 [System.Serializable]
 public class PlayerInfo
@@ -15,7 +16,7 @@ public class PlayerInfo
 public class Player : MonoBehaviour
 {
     PlayerInfo _info = new PlayerInfo();
-    [SerializeField] Gun _equippedGun = null;
+    Gun _equippedGun = new Gun();
 
     Rigidbody2D _rigidbody;
     float _shotTimer = 0f;
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        LoadInfo();
     }
 
     private void Update()
@@ -101,7 +103,7 @@ public class Player : MonoBehaviour
         if (_health <= 0)
         {
             Debug.Log("Game Over");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
         }
     }
 
@@ -111,15 +113,29 @@ public class Player : MonoBehaviour
         _text.text = "Scores: " + _info.points;
     }
 
-    public bool LoadInfo(string username, string password)
+    public bool LoadInfo()
     {
-        // TODO Load from Database
-        return false;
-    }
+        AppData.DBConnect(out SqliteConnection connection, out SqliteCommand cmd);
 
-    public bool Equip(string gunName)
-    {
-        //TODO Check if player ownes gun and equip
-        return false;
+        cmd.CommandText = "select * from player where player.id = " + AppData.activePlayerID;
+        IDataReader playerReader = cmd.ExecuteReader();
+        playerReader.Read();
+        _info.points = (int)playerReader["points"];
+        _info.username = (string)playerReader["Username"];
+        _info.password = (string)playerReader["Password"];
+        _info.id = (int)playerReader["id"];
+        playerReader.Close();
+
+        cmd.CommandText = "select Gun(Name, Damage, FireLimit, Price) where Player.id = PlayerGun.PlayerId and PlayerGun.GunName = Gun.Name and Player.id = " + _info.id + " and PlayerGun.GunName = " + AppData.activeGunName;
+        IDataReader gunReader = cmd.ExecuteReader();
+        gunReader.Read();
+        _equippedGun.name = (string)gunReader["name"];
+        _equippedGun.damage = (float)gunReader["damage"];
+        _equippedGun.fireLimit = (float)gunReader["fireLimit"];
+        _equippedGun.price = (float)gunReader["price"];
+        gunReader.Close();
+
+        AppData.DBClose(ref connection, ref cmd);
+        return true;
     }
 }

@@ -5,6 +5,7 @@ public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] string gameScene;
     [SerializeField] string shopScene;
+    [SerializeField] string accountScene;
     [SerializeField] string startScene;
     public void StartGame()
     {
@@ -14,6 +15,11 @@ public class MainMenuManager : MonoBehaviour
     public void LoadShop()
     {
         SceneManager.LoadScene(shopScene);
+    }
+
+    public void AccountInfo()
+    {
+        SceneManager.LoadScene(accountScene);
     }
 
     public void LogOut()
