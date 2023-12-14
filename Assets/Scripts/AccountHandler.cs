@@ -45,7 +45,7 @@ public class AccountHandler : MonoBehaviour
                 connection.Dispose();
                 return;
             }
-            string name = (string)reader["playerName"];
+            string name = (string)reader["username"];
 
             _resultText.text = "Welcome " + name + "!";
             SceneManager.LoadScene(1);
