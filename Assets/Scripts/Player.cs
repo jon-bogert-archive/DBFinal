@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using Mono.Data.Sqlite;
 using System.Data;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class PlayerInfo
@@ -9,7 +10,7 @@ public class PlayerInfo
     public int id;
     public string username;
     public string password;
-    public int points;
+    public float points;
 }
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -102,6 +103,8 @@ public class Player : MonoBehaviour
 
         if (_health <= 0)
         {
+            UpdatePoints();
+
             Debug.Log("Game Over");
             UnityEngine.SceneManagement.SceneManager.LoadScene("Main Menu");
         }
@@ -110,7 +113,7 @@ public class Player : MonoBehaviour
     public void AddPoints(int points)
     {
         _info.points += points;
-        _text.text = "Scores: " + _info.points;
+        _text.text = "Points: " + _info.points;
     }
 
     public bool LoadInfo()
@@ -120,13 +123,13 @@ public class Player : MonoBehaviour
         cmd.CommandText = "select * from player where player.id = " + AppData.activePlayerID;
         IDataReader playerReader = cmd.ExecuteReader();
         playerReader.Read();
-        _info.points = (int)playerReader["points"];
+        _info.points = (float)playerReader["points"];
         _info.username = (string)playerReader["Username"];
         _info.password = (string)playerReader["Password"];
-        _info.id = (int)playerReader["id"];
+        _info.id = AppData.activePlayerID;
         playerReader.Close();
 
-        cmd.CommandText = "select Gun(Name, Damage, FireLimit, Price) where Player.id = PlayerGun.PlayerId and PlayerGun.GunName = Gun.Name and Player.id = " + _info.id + " and PlayerGun.GunName = " + AppData.activeGunName;
+        cmd.CommandText = "select * from gun where name = '" + AppData.activeGunName + "';";
         IDataReader gunReader = cmd.ExecuteReader();
         gunReader.Read();
         _equippedGun.name = (string)gunReader["name"];
@@ -136,6 +139,23 @@ public class Player : MonoBehaviour
         gunReader.Close();
 
         AppData.DBClose(ref connection, ref cmd);
+
+        _text.text = "Points: " + _info.points;
+
         return true;
+    }
+
+    public void GotoMainMenu()
+    {
+        UpdatePoints();
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    private void UpdatePoints()
+    {
+        AppData.DBConnect(out SqliteConnection connection, out SqliteCommand cmd);
+        cmd.CommandText = "update player set points = " + _info.points + " where id = " + _info.id + ";";
+        cmd.ExecuteNonQuery();
+        AppData.DBClose(ref connection, ref cmd);
     }
 }

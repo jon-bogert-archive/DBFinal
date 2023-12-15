@@ -47,16 +47,20 @@ public class RegisterHandler : MonoBehaviour
             "values ('" + _usernameInput.text + "', '" + _passwordInput.text + "', '" + _playerFirstNameInput.text + "', '" + _playerLastNameInput.text + "', '" + _dobInput.text + "', '" + _emailInput.text + "');";
         cmd.ExecuteNonQuery();
 
+        cmd.CommandText = "select * from player where username = '" + _usernameInput.text + "';";
+        reader = cmd.ExecuteReader();
+        reader.Read();
+        AppData.activePlayerID = reader.GetInt32(reader.GetOrdinal("id"));
+        reader.Close();
+
+        cmd.CommandText = "insert into PlayerGun(PlayerId, GunName) values (" + AppData.activePlayerID + ", 'Pistol');";
+        cmd.ExecuteNonQuery();
+
         cmd.Dispose();
         connection.Close();
         connection.Dispose();
 
         _resultText.text = "Thank you for registering " + _playerFirstNameInput.text + "!";
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

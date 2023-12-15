@@ -2,6 +2,7 @@ using Mono.Data.Sqlite;
 using System.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AccountInfoHandler : MonoBehaviour
 {
@@ -20,7 +21,6 @@ public class AccountInfoHandler : MonoBehaviour
 
         //test username
         cmd.CommandText = "select * from player where id = " + AppData.activePlayerID.ToString() + ";";
-        Debug.Log(cmd.CommandText);
         IDataReader reader = cmd.ExecuteReader();
 
         if (reader.Read())
@@ -38,5 +38,21 @@ public class AccountInfoHandler : MonoBehaviour
         connection.Dispose();
     }
 
-    // Update is called once per frame
+    public void DeleteAndLogOut()
+    {
+        SqliteConnection connection = new SqliteConnection(_dbName);
+        connection.Open();
+        SqliteCommand cmd = connection.CreateCommand();
+
+        cmd.CommandText = "delete from playergun where PlayerId = " + AppData.activePlayerID.ToString() + ";";
+        cmd.ExecuteNonQuery();
+        cmd.CommandText = "delete from player where id = " + AppData.activePlayerID.ToString() + ";";
+        cmd.ExecuteNonQuery();
+
+        cmd.Dispose();
+        connection.Close();
+        connection.Dispose();
+
+        SceneManager.LoadScene(0);
+    }
 }

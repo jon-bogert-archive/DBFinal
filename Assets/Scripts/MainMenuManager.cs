@@ -24,6 +24,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void LogOut()
     {
+        AppData.activeGunName = "Pistol";
+        AppData.activePlayerID = -1;
         SceneManager.LoadScene(startScene);
     }
 }

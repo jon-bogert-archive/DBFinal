@@ -18,7 +18,6 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
-        AppData.activePlayerID = 0;
         HideNotEnoughMenu();
         UpdatePointsText();
 
@@ -154,6 +153,6 @@ public class ShopManager : MonoBehaviour
 
     public void EnterMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("Main Menu");
     }
 }

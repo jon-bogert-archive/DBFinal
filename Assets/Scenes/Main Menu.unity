@@ -315,7 +315,7 @@ MonoBehaviour:
   gameScene: EnemyTest
   shopScene: Shop
   accountScene: AccountInfo
-  startScene: Start
+  startScene: Login
 --- !u!4 &428836584
 Transform:
   m_ObjectHideFlags: 0
